@@ -11,7 +11,7 @@ dockerize -template /etc/transmission/environment-variables.tmpl:/etc/transmissi
 echo "[#] Waiting for wg0 to initialize and grab port forward"
 sleep 5s
 
-WG_IP=$(ip addr show wg0 | awk '/inet/ {gsub(/\/32/, \"\"); print $2}')
+WG_IP=$(ip addr show wg0 | awk '/inet/ {gsub(/\/32/, ""); print $2}')
 PEER_PORT="${1}"
 
 echo "Updating TRANSMISSION_BIND_ADDRESS_IPV4 to the ip of wg0 : ${WG_IP}"
