@@ -1,5 +1,9 @@
 #!/bin/bash
 
+# Persist transmission settings for use by transmission-daemon
+echo "$(date) Creating environment-variables.sh from template file."
+dockerize -template /etc/transmission/environment-variables.tmpl:/etc/transmission/environment-variables.sh
+
 # Source our persisted env variables from container startup
 . /etc/transmission/environment-variables.sh
 
@@ -7,7 +11,7 @@
 echo "[#] Waiting for wg0 to initialize and grab port forward"
 sleep 5s
 
-WG_IP="$(ip addr show wg0 | awk '/inet/ {gsub(/\/32/, \"\"); print $2}')"
+WG_IP=$(ip addr show wg0 | awk '/inet/ {gsub(/\/32/, \"\"); print $2}')
 PEER_PORT="${1}"
 
 echo "Updating TRANSMISSION_BIND_ADDRESS_IPV4 to the ip of wg0 : ${WG_IP}"
@@ -33,6 +37,7 @@ fi
 echo "Generating transmission settings.json from env variables"
 # Ensure TRANSMISSION_HOME is created
 mkdir -p ${TRANSMISSION_HOME}
+echo "$(date) Creating Transmission settings.json from template file."
 dockerize -template /etc/transmission/settings.tmpl:${TRANSMISSION_HOME}/settings.json
 
 echo "sed'ing True to true"
