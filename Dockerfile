@@ -152,7 +152,7 @@ COPY pre-up.sh post-up.sh pre-down.sh post-down.sh ./scripts/start-transmission.
 RUN chmod 755 /scripts/*
 
 # Copy configs
-ADD transmission /etc/transmission
+ADD transmission /opt/transmission
 ADD tinyproxy /opt/tinyproxy
 
 # Store persistent PIA stuff here (auth token, server list)

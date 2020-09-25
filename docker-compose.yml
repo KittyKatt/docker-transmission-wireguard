@@ -9,6 +9,8 @@ services:
             - pia-shared:/pia-shared
             # Adding local /lib/modules to container in read-only mode for wireguard modules
             - /lib/modules:/lib/modules:ro
+            # Edit this to the directory that Transmission configuration should be stored, if you'd like it persistent
+            # - /your/path/here:/config
             # Edit this to the directory your Transmission downloads should go
             - /your/path/here:/data
         cap_add:

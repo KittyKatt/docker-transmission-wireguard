@@ -4,7 +4,7 @@ echo "[$(date)]  Initializing Transmission Daemon."
 
 # Persist transmission settings for use by transmission-daemon
 echo "[#] Creating environment-variables.sh from template file."
-dockerize -template /etc/transmission/environment-variables.tmpl:/etc/transmission/environment-variables.sh
+dockerize -template /opt/transmission/environment-variables.tmpl:/etc/transmission/environment-variables.sh
 
 # Source our persisted env variables from container startup
 . /etc/transmission/environment-variables.sh
@@ -40,7 +40,7 @@ echo "[#] Generating transmission settings.json from env variables"
 # Ensure TRANSMISSION_HOME is created
 mkdir -p ${TRANSMISSION_HOME}
 echo "[#] Creating Transmission settings.json from template file."
-dockerize -template /etc/transmission/settings.tmpl:${TRANSMISSION_HOME}/settings.json
+dockerize -template /opt/transmission/settings.tmpl:${TRANSMISSION_HOME}/settings.json
 
 echo "[#] sed'ing True to true"
 sed -i 's/True/true/g' ${TRANSMISSION_HOME}/settings.json
@@ -52,7 +52,7 @@ if [[ ! -e "/dev/random" ]]; then
 fi
 
 # Setting up Transmission user
-. /etc/transmission/userSetup.sh
+. /opt/transmission/userSetup.sh
 
 # Setting logfile to local file
 LOGFILE=${TRANSMISSION_HOME}/transmission.log
