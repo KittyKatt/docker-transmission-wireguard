@@ -43,7 +43,7 @@ You can find a sample of all the Transmission environment variables in the [env]
 * ipv4 only. All ipv6 traffic should be blocked, but you may want to disable ipv6 on the container anyway.
 * An example [docker-compose.yml](/docker-compose.yml) is included.
 * Other containers can share the VPN connection using Docker's [```--net=container:xyz```](https://docs.docker.com/engine/reference/run/#network-settings) or docker-compose's [```network_mode: service:xyz```](https://docs.docker.com/compose/compose-file/#network_mode).
-* Standalone [Bash scripts](/scripts) are available for use outside of Docker.
+* Standalone [Bash scripts](/extras) are available for use outside of Docker.
 
 ## Credits
 Some bits and pieces and ideas have been borrowed from the following:
