@@ -125,7 +125,8 @@ COPY ./RegionsListPubKey.pem /RegionsListPubKey.pem
 RUN curl -L https://github.com/jwilder/dockerize/releases/download/${DOCKERIZE_VERSION}/dockerize-linux-${DOCKERIZE_ARCH}-${DOCKERIZE_VERSION}.tar.gz | tar -C /usr/local/bin -xzv
 
 # Get additionl Transmmission web UIs
-RUN wget https://github.com/Secretmapper/combustion/archive/release.zip \
+RUN mkdir /opt/transmission-ui/ \
+    && wget https://github.com/Secretmapper/combustion/archive/release.zip \
     && unzip release.zip -d /opt/transmission-ui/ \
     && rm release.zip \
     && mkdir /opt/transmission-ui/transmission-web-control \
