@@ -148,7 +148,7 @@ RUN mkdir /opt/transmission-ui/ \
 WORKDIR /scripts
 
 # Copy scripts to containers
-COPY pre-up.sh post-up.sh pre-down.sh post-down.sh start-transmission.sh start-tinyproxy.sh run ./scripts/pf.sh /scripts/
+COPY pre-up.sh post-up.sh pre-down.sh post-down.sh ./scripts/start-transmission.sh ./scripts/start-tinyproxy.sh run ./scripts/pf.sh /scripts/
 RUN chmod 755 /scripts/*
 
 # Copy configs
