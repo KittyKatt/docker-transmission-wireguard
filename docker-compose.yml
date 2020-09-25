@@ -7,8 +7,10 @@ services:
             - pia:/pia
             # If enabled, the forwarded port is dumped to /pia-shared/port.dat for potential use in other containers
             - pia-shared:/pia-shared
-            # Adding local /lib/modules to container in read-only mode
+            # Adding local /lib/modules to container in read-only mode for wireguard modules
             - /lib/modules:/lib/modules:ro
+            # Edit this to the directory your Transmission downloads should go
+            - /your/path/here:/data
         cap_add:
             - NET_ADMIN
             # SYS_MODULE might not be needed with a 5.6+ kernel?
