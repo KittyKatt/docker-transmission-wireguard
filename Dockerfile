@@ -1,4 +1,4 @@
-FROM alpine:latest
+FROM alpine:3.12
 
 ARG DOCKERIZE_ARCH=amd64
 ARG DOCKERIZE_VERSION=v0.6.1
@@ -8,6 +8,7 @@ VOLUME /config
 
 RUN apk add --no-cache \
     bash \
+    shadow \
     ca-certificates \
     curl \
     ip6tables \
