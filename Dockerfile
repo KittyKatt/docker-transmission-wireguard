@@ -1,5 +1,8 @@
 FROM alpine:latest
 
+ARG DOCKERIZE_ARCH=amd64
+ARG DOCKERIZE_VERSION=v0.6.1
+
 VOLUME /data
 VOLUME /config
 
