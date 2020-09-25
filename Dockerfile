@@ -152,8 +152,7 @@ COPY pre-up.sh post-up.sh pre-down.sh post-down.sh ./scripts/start-transmission.
 RUN chmod 755 /scripts/*
 
 # Copy configs
-RUN mkdir /etc/transmission \
-    && mkdir /etc/tinyproxy
+RUN mkdir /etc/transmission
 ADD transmission /opt/transmission
 ADD tinyproxy /opt/tinyproxy
 
