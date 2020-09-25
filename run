@@ -29,6 +29,9 @@ pf_persistfile="$CONFIGDIR/portsig.json"
 
 POST_SCRIPT="/scripts/start-transmission.sh $PORTFILE"
 
+# Persist transmission settings for use by transmission-daemon
+dockerize -template /etc/transmission/environment-variables.tmpl:/etc/transmission/environment-variables.sh
+
 [ $USEMODERN -eq 1 ] && DATAFILE="$CONFIGDIR/data_modern.json"
 
 # Handle shutdown behavior

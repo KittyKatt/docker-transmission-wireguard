@@ -3,6 +3,10 @@
 # Source our persisted env variables from container startup
 . /etc/transmission/environment-variables.sh
 
+# Wait for wireguard port to initialize
+echo "[#] Waiting for wg0 to initialize and grab port forward"
+sleep 5s
+
 WG_IP="$(ip addr show wg0 | awk '/inet/ {gsub(\"\/32\", \"\"); print $2}')"
 PEER_PORT="$(cat "${1}")"
 
