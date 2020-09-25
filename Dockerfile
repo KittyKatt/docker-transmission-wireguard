@@ -121,21 +121,24 @@ ADD https://raw.githubusercontent.com/pia-foss/desktop/master/daemon/res/ca/rsa_
 # https://github.com/pia-foss/desktop/blob/master/daemon/src/environment.cpp#L30
 COPY ./RegionsListPubKey.pem /RegionsListPubKey.pem
 
-# Get dockerize binary
-RUN curl -L https://github.com/jwilder/dockerize/releases/download/${DOCKERIZE_VERSION}/dockerize-linux-${DOCKERIZE_ARCH}-${DOCKERIZE_VERSION}.tar.gz | tar -C /usr/local/bin -xzv
-
-# Get additionl Transmmission web UIs
+# Get additionl binaries and Transmission themes
 RUN mkdir /opt/transmission-ui/ \
-    && wget https://github.com/Secretmapper/combustion/archive/release.zip \
-    && unzip release.zip -d /opt/transmission-ui/ \
-    && rm release.zip \
+    && echo "Install dockerize $DOCKERIZE_VERSION ($DOCKERIZE_ARCH)" \
+    && wget -qO- https://github.com/jwilder/dockerize/releases/download/$DOCKERIZE_VERSION/dockerize-linux-$DOCKERIZE_ARCH-$DOCKERIZE_VERSION.tar.gz | tar xz -C /usr/bin \
+    && mkdir -p /opt/transmission-ui \
+    && echo "Install Combustion" \
+    && wget -qO- https://github.com/Secretmapper/combustion/archive/release.tar.gz | tar xz -C /opt/transmission-ui \
+    && echo "Install kettu" \
+    && wget -qO- https://github.com/endor/kettu/archive/master.tar.gz | tar xz -C /opt/transmission-ui \
+    && mv /opt/transmission-ui/kettu-master /opt/transmission-ui/kettu \
+    && echo "Install Transmission-Web-Control" \
     && mkdir /opt/transmission-ui/transmission-web-control \
     && curl -sL `curl -s https://api.github.com/repos/ronggang/transmission-web-control/releases/latest | jq --raw-output '.tarball_url'` | tar -C /opt/transmission-ui/transmission-web-control/ --strip-components=2 -xz \
     && ln -s /usr/share/transmission/web/style /opt/transmission-ui/transmission-web-control \
     && ln -s /usr/share/transmission/web/images /opt/transmission-ui/transmission-web-control \
     && ln -s /usr/share/transmission/web/javascript /opt/transmission-ui/transmission-web-control \
     && ln -s /usr/share/transmission/web/index.html /opt/transmission-ui/transmission-web-control/index.original.html \
-    && git clone git://github.com/endor/kettu.git /opt/transmission-ui/kettu \
+    && rm -rf /tmp/* /var/tmp/* \
     && groupmod -g 1000 users \
     && useradd -u 911 -U -d /config -s /bin/false abc \
     && usermod -G users abc
