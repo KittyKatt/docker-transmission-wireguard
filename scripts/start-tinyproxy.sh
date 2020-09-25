@@ -1,3 +1,3 @@
 #!/bin/bash
 
-echo "TinyProxy not ready yet!"
+echo "[$(date)]  TinyProxy not ready yet!"
