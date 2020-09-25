@@ -273,4 +273,17 @@ port_forward () {
 
 [ $PORT_FORWARDING -eq 1 ] && [ $USEMODERN -eq 1 ] && [ $PORT_FORWARD_AVAIL -eq 1 ] && port_forward
 
+# Wait 15s for wg0 to be active
+sleep 15s
+
+if [[ ! -d /sys/class/net/wg0 ]]; then
+  # Get Transmission variables exported to sourceable file
+  dockerize -template /etc/transmission/environment-variables.tmpl:/etc/transmission/environment-variables.sh
+  /scripts/start-transmission.sh "${pf_port}"
+  /scripts/start_tinyproxy.sh
+else
+  echo "!!!! Wireguard interface not up. Exiting."
+  exit
+fi
+
 now_sleep
