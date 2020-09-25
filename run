@@ -27,6 +27,8 @@ pia_cacrt="/rsa_4096.crt"
 
 pf_persistfile="$CONFIGDIR/portsig.json"
 
+POST_SCRIPT="/scripts/start-transmission.sh $PORTFILE"
+
 [ $USEMODERN -eq 1 ] && DATAFILE="$CONFIGDIR/data_modern.json"
 
 # Handle shutdown behavior
@@ -241,9 +243,9 @@ port_forward () {
   echo "$(date): Starting port forward script"
   # Try to use a persistent port if requested
   if [ $PORT_PERSIST -eq 1 ]; then
-    /scripts/pf.sh -t "$TOKENFILE" -i "$SERVER_VIP" -n "$WG_DNS" -p "$PORTFILE" -c "$pia_cacrt" -r "$pf_persistfile" &
+    /scripts/pf.sh -t "$TOKENFILE" -i "$SERVER_VIP" -n "$WG_DNS" -p "$PORTFILE" -c "$pia_cacrt" -r "$pf_persistfile" -s "$POST_SCRIPT" &
   else
-    /scripts/pf.sh -t "$TOKENFILE" -i "$SERVER_VIP" -n "$WG_DNS" -p "$PORTFILE" -c "$pia_cacrt" &
+    /scripts/pf.sh -t "$TOKENFILE" -i "$SERVER_VIP" -n "$WG_DNS" -p "$PORTFILE" -c "$pia_cacrt" -s "$POST_SCRIPT" &
   fi
   pf_pid=$!
   # Standalone script doesn't handle iptables rules, so do that here
@@ -272,13 +274,5 @@ port_forward () {
 }
 
 [ $PORT_FORWARDING -eq 1 ] && [ $USEMODERN -eq 1 ] && [ $PORT_FORWARD_AVAIL -eq 1 ] && port_forward
-
-# Wait 15s for wg0 to be active
-sleep 5s
-
-# Get Transmission variables exported to sourceable file
-dockerize -template /etc/transmission/environment-variables.tmpl:/etc/transmission/environment-variables.sh
-/scripts/start-transmission.sh "${pf_port}"
-/scripts/start_tinyproxy.sh
 
 now_sleep

@@ -4,7 +4,7 @@
 . /etc/transmission/environment-variables.sh
 
 WG_IP="$(ip addr show wg0 | awk '/inet/ {gsub(\"\/32\", \"\"); print $2}')"
-PEER_PORT="${1}"
+PEER_PORT="$(cat "${1}")"
 
 echo "Updating TRANSMISSION_BIND_ADDRESS_IPV4 to the ip of wg0 : ${WG_IP}"
 export TRANSMISSION_BIND_ADDRESS_IPV4=${WG_IP}
