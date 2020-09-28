@@ -55,15 +55,35 @@ echo "[#] sed'ing True to true"
 sed -i 's/True/true/g' ${TRANSMISSION_HOME}/settings.json
 
 if [[ ! -e "/dev/random" ]]; then
-  # Avoid "Fatal: no entropy gathering module detected" error
-  echo "[#] INFO: /dev/random not found - symlink to /dev/urandom"
-  ln -s /dev/urandom /dev/random
+    # Avoid "Fatal: no entropy gathering module detected" error
+    echo "[#] INFO: /dev/random not found - symlink to /dev/urandom"
+    ln -s /dev/urandom /dev/random
 fi
 
 # Setting up Transmission user
 . /opt/transmission/userSetup.sh
 
-# Setting logfile to local file
+# Setting logfile to local file and set log level if specified
+if [[ ! -n "${TRANSMISSION_LOG_LEVEL}" ]]; then
+    case ${TRANSMISSION_LOG_LEVEL} in
+        "none")
+            echo "[#] Setting Transmission log level to none (0)."
+            export TRANSMISSION_MESSAGE_LEVEL=0
+            ;;
+        "error")
+            echo "[#] Setting Transmission log level to error (1)."
+            export TRANSMISSION_MESSAGE_LEVEL=1
+            ;;
+        "info")
+            echo "[#] Setting Transmission log level to info (2)."
+            export TRANSMISSION_MESSAGE_LEVEL=2
+            ;;
+        "debug")
+            echo "[#] Setting Transmission log level to debug (3)."
+            export TRANSMISSION_MESSAGE_LEVEL=3
+            ;;
+    esac
+fi
 LOGFILE=${TRANSMISSION_HOME}/transmission.log
 
 echo "[#] STARTING TRANSMISSION"
