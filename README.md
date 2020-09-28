@@ -9,12 +9,12 @@ Original wireguard+pia code forked from [thrnz/docker-wireguard-pia](https://git
 * An active [PIA](https://www.privateinternetaccess.com) subscription.
 
 ## Project Status
-# Working
+### Working
 * Wireguard via PIA
 * Transmission bound to wireguard interface
 * Transmission grabs port automatically from wireguard script
 
-# Not Working
+### Not Working
 * Tinyproxy service to proxy through same IP as transmission
 
 ## Config
