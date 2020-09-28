@@ -45,24 +45,6 @@ case $TRANSMISSION_UI in
         ;;
 esac
 
-echo "[#] Generating transmission settings.json from env variables"
-# Ensure TRANSMISSION_HOME is created
-mkdir -p ${TRANSMISSION_HOME}
-echo "[#] Creating Transmission settings.json from template file."
-dockerize -template /opt/transmission/settings.tmpl:${TRANSMISSION_HOME}/settings.json
-
-echo "[#] sed'ing True to true"
-sed -i 's/True/true/g' ${TRANSMISSION_HOME}/settings.json
-
-if [[ ! -e "/dev/random" ]]; then
-    # Avoid "Fatal: no entropy gathering module detected" error
-    echo "[#] INFO: /dev/random not found - symlink to /dev/urandom"
-    ln -s /dev/urandom /dev/random
-fi
-
-# Setting up Transmission user
-. /opt/transmission/userSetup.sh
-
 # Setting logfile to local file and set log level if specified
 if [[ ! -n "${TRANSMISSION_LOG_LEVEL}" ]]; then
     case ${TRANSMISSION_LOG_LEVEL} in
@@ -85,6 +67,24 @@ if [[ ! -n "${TRANSMISSION_LOG_LEVEL}" ]]; then
     esac
 fi
 LOGFILE=${TRANSMISSION_HOME}/transmission.log
+
+echo "[#] Generating transmission settings.json from env variables"
+# Ensure TRANSMISSION_HOME is created
+mkdir -p ${TRANSMISSION_HOME}
+echo "[#] Creating Transmission settings.json from template file."
+dockerize -template /opt/transmission/settings.tmpl:${TRANSMISSION_HOME}/settings.json
+
+echo "[#] sed'ing True to true"
+sed -i 's/True/true/g' ${TRANSMISSION_HOME}/settings.json
+
+if [[ ! -e "/dev/random" ]]; then
+    # Avoid "Fatal: no entropy gathering module detected" error
+    echo "[#] INFO: /dev/random not found - symlink to /dev/urandom"
+    ln -s /dev/urandom /dev/random
+fi
+
+# Setting up Transmission user
+. /opt/transmission/userSetup.sh
 
 echo "[#] STARTING TRANSMISSION"
 exec su --preserve-environment ${RUN_AS} -s /bin/bash -c "/usr/bin/transmission-daemon -g ${TRANSMISSION_HOME} --logfile $LOGFILE" &
