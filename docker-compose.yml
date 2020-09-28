@@ -9,7 +9,7 @@ services:
             - pia-shared:/pia-shared
             # Adding local /lib/modules to container in read-only mode for wireguard modules
             - /lib/modules:/lib/modules:ro
-            # Edit this to the directory that Transmission configuration should be stored, if you'd like it persistent
+            # Edit this to the directory that Transmission configuration should be stored, if you'd like it persistent. Also edit TRANSMISSION_HOME.
             # - /your/path/here:/config
             # Edit this to the directory your Transmission downloads should go
             - /your/path/here:/data
@@ -26,6 +26,14 @@ services:
             #- VPNDNS=8.8.8.8,8.8.4.4
             - USEMODERN=1
             - PORT_FORWARDING=1
+            #- TRANSMISSION_HOME=/config
+            #- WEBPROXY_ENABLED=true
+            #- WEBPROXY_PORT=8888
+        ports:
+            # Transmission
+            - 9091:9091
+            # Tinyproxy
+            #- 8888:8888
         sysctls:
             # wg-quick fails to set this without --privileged, so set it here instead if needed
             - net.ipv4.conf.all.src_valid_mark=1
