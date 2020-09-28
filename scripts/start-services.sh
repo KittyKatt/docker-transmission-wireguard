@@ -123,12 +123,13 @@ if [[ "${WEBPROXY_ENABLED}" = "true" ]]; then
     echo "[#] Found config file $PROXY_CONF, updating settings."
 
     if [[ ! -z "${WEBPROXY_PORT}" ]]; then
-        set_port ${WEBPROXY_PORT} ${PROXY_CONF}
+        set_proxy_port ${WEBPROXY_PORT} ${PROXY_CONF}
     fi
-    set_bind_ip ${WG_IP} ${PROXY_CONF}
+    echo "[#] Set proxy bind IP to $WG_IP."
+    set_proxy_bind_ip ${WG_IP} ${PROXY_CONF}
 
     if [[ ! -z "${WEBPROXY_USERNAME}" ]] && [[ ! -z "${WEBPROXY_PASSWORD}" ]]; then
-        set_authentication ${WEBPROXY_USERNAME} ${WEBPROXY_PASSWORD} ${PROXY_CONF}
+        set_proxy_authentication ${WEBPROXY_USERNAME} ${WEBPROXY_PASSWORD} ${PROXY_CONF}
     fi
 
     # Allow all clients
