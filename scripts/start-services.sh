@@ -1,11 +1,10 @@
 #!/bin/bash
 
-# Takes two arguments:
-#   $1 == IP address of wg0
-#   $2 == Forwarded port of wireguard w/ PIA
+# Takes a single argument:
+#   $1 == Forwarded port of wireguard w/ PIA
 
-WG_IP="${1}"
-WG_PORT="${2}"
+WG_IP=$(ip addr show wg0 | awk '/inet/ {gsub(/\/32/, ""); print $2}')
+PEER_PORT="${1}"
 
 # Persist transmission settings for use by transmission-daemon
 echo "[#] Creating environment-variables.sh from template file."
@@ -23,9 +22,6 @@ echo "[$(date)]  Initializing Transmission Daemon."
 # Wait for wireguard port to initialize
 echo "[#] Waiting for wg0 to initialize and grab port forward"
 sleep 5s
-
-WG_IP=$(ip addr show wg0 | awk '/inet/ {gsub(/\/32/, ""); print $2}')
-PEER_PORT="${1}"
 
 echo "[#] Updating TRANSMISSION_BIND_ADDRESS_IPV4 to the ip of wg0 : ${WG_IP}"
 export TRANSMISSION_BIND_ADDRESS_IPV4=${WG_IP}
@@ -117,18 +113,19 @@ set_proxy_authentication() {
 
 set_proxy_bind_ip() {
     echo "[#] Setting bind IP to ${PROXY_BIND}."
-    sed -i -e "s,^Bind .*,Bind $1," $2
+    sed -i -e "s,^#Bind .*,Bind $1," $2
 }
 
 if [[ "${WEBPROXY_ENABLED}" = "true" ]]; then
     echo "[$(date)]  Initializing Tinyproxy."
-    WEBPROXY_BIND_IP="${WG_IP}"
 
     find_proxy_conf
     echo "[#] Found config file $PROXY_CONF, updating settings."
 
-    set_port ${WEBPROXY_PORT} ${PROXY_CONF}
-    set_bind_ip ${WEBPROXY_BIND_IP} ${PROXY_CONF}
+    if [[ ! -z "${WEBPROXY_PORT}" ]]; then
+        set_port ${WEBPROXY_PORT} ${PROXY_CONF}
+    fi
+    set_bind_ip ${WG_IP} ${PROXY_CONF}
 
     if [[ ! -z "${WEBPROXY_USERNAME}" ]] && [[ ! -z "${WEBPROXY_PASSWORD}" ]]; then
         set_authentication ${WEBPROXY_USERNAME} ${WEBPROXY_PASSWORD} ${PROXY_CONF}
