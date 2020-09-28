@@ -141,6 +141,6 @@ if [[ "${WEBPROXY_ENABLED}" = "true" ]]; then
     # Lower log level for privacy (writes dns names by default)
     sed -i -e "s/LogLevel Info/LogLevel Critical/" ${PROXY_CONF}
 
-    /etc/init.d/tinyproxy start
+    tinyproxy -d -c ${PROXY_CONF}
     echo "[#] Tinyproxy startup script complete."
 fi
