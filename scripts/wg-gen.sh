@@ -161,7 +161,7 @@ DNS = $dns
 
 [Peer]
 PublicKey = $server_public_key
-AllowedIPs = 0.0.0.0/0, ::/0
+AllowedIPs = 0.0.0.0/0
 Endpoint = $server_ip:$server_port
 CONFF
 
