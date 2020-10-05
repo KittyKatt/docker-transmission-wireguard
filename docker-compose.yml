@@ -29,6 +29,7 @@ services:
             #- TRANSMISSION_HOME=/config
             #- WEBPROXY_ENABLED=true
             #- WEBPROXY_PORT=8888
+            #- HEALTH_CHECK_HOST=google.com
         ports:
             # Transmission
             - 9091:9091

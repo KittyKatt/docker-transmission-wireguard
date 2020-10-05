@@ -110,7 +110,8 @@ ENV PUID= \
     #WEBPROXY_PORT=8888 \
     WEBPROXY_USERNAME= \
     WEBPROXY_PASSWORD= \
-    EXIT_ON_FATAL=0
+    EXIT_ON_FATAL=0 \
+    HEALTH_CHECK_HOST=
 
 # Modify wg-quick so it doesn't die without --privileged
 # Set net.ipv4.conf.all.src_valid_mark=1 on container creation using --sysctl if required instead
@@ -166,5 +167,8 @@ VOLUME /pia-shared
 # Expose ports
 EXPOSE 9091
 EXPOSE 8888
+
+# Health Check
+# HEALTHCHECK --interval=5m CMD /scripts/healthcheck.sh
 
 CMD ["/scripts/run"]
