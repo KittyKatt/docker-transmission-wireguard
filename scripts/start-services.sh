@@ -3,7 +3,7 @@
 # Takes a single argument:
 #   $1 == Forwarded port of wireguard w/ PIA
 
-WG_IP=$(ip addr show wg0 | awk '/inet/ {gsub(/\/32/, ""); print $2}')
+WG_IP="${2}"
 PEER_PORT="${1}"
 
 # Persist transmission settings for use by transmission-daemon
