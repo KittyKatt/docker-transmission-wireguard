@@ -80,10 +80,10 @@ export PUID={{ .Env.PUID }}
 export PGID={{ .Env.PGID }}
 
 export HEALTH_CHECK_HOST={{ .Env.HEALTH_CHECK_HOST }}
+export FIREWALL={{ .Env.FIREWALL }}
 
 # Need to pass through our tinyproxy settings
 export WEBPROXY_ENABLED={{ .Env.WEBPROXY_ENABLED }}
-export WEBPROXY_PORT={{ .Env.WEBPROXY_PORT }}
 export WEBPROXY_USERNAME={{ .Env.WEBPROXY_USERNAME }}
 export WEBPROXY_PASSWORD="{{ .Env.WEBPROXY_PASSWORD }}"
 
